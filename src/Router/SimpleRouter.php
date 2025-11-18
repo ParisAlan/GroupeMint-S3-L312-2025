@@ -4,7 +4,7 @@ namespace Framework312\Router;
 
 use Framework312\Router\Exception as RouterException;
 use Framework312\Template\Renderer;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request; // Rajout de Request
 use Symfony\Component\HttpFoundation\Response;
 
 class Route {
@@ -50,10 +50,23 @@ class SimpleRouter implements Router {
 
     public function serve(mixed ...$args): void {
 	    // TODO
-        $requete = Request::createFromGlobals(); // Il semblerait que c'est la façon la plus commune de commencer une requete
-        // https://symfony.com/doc/current/components/http_foundation.html#:~:text=The%20HttpFoundation%20component%20defines%20an,()%20%2C%20...).
+        $request = Request::createFromGlobals(); // Il semblerait que c'est la façon la plus commune de commencer une requete
+        $request->getPathInfo();
 
+        // https://symfony.com/doc/current/components/http_foundation.html
 
+        $viewClass = $this->routes[$path]; // "Book" ici par exemple.
+        $route = new Route($viewClass); // On crée une nouvelle route
+
+        $response = $route->call($request, $this->engine); // Appelle la méthode Route::call
+
+        // Préparer la réponse
+        $response->prepare($request);
+
+        // Puis envoyer
+        $response->send();
+
+        // https://symfony.com/doc/current/components/http_foundation.html dans Responses
     }
 }
 
