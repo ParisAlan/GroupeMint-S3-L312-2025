@@ -31,21 +31,29 @@ class Route {
 class SimpleRouter implements Router {
     private Renderer $engine;
 
+    private array $routes; // On crée le tableau qui nous servira par là suite à stocker les routes
+
     public function __construct(Renderer $engine) {
         $this->engine = $engine;
+        $this->routes = []; // On dit que c'est un tableau vide
         // TODO
     }
 //  $router = new SimpleRouter($engine);
-//  $router->register('/book/world  /book/7ABd9x', 'Book');
+//  $router->register('/book/world', 'Book');
 
     public function register(string $path, string|object $class_or_view) {
-        $this->path = $path;
-        $this->class_or_view = $class_or_view;
+
+        $this->routes[$path] = $class_or_view;
+        // Catch-All ?
 	    // TODO
     }
 
     public function serve(mixed ...$args): void {
 	    // TODO
+        $requete = Request::createFromGlobals(); // Il semblerait que c'est la façon la plus commune de commencer une requete
+        // https://symfony.com/doc/current/components/http_foundation.html#:~:text=The%20HttpFoundation%20component%20defines%20an,()%20%2C%20...).
+
+
     }
 }
 
