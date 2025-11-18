@@ -63,7 +63,7 @@ class SimpleRouter implements Router {
         // Préparer la réponse
         $response->prepare($request);
 
-        // Puis envoyer
+        // Puis envoyer ?
         $response->send();
 
         // https://symfony.com/doc/current/components/http_foundation.html dans Responses
