@@ -25,6 +25,7 @@ class Route {
 
     public function call(Request $request, ?Renderer $engine): Response {
 	    // TODO
+        // ???
     }
 }
 
@@ -66,7 +67,7 @@ class SimpleRouter implements Router {
         // Puis envoyer ?
         $response->send();
 
-        // https://symfony.com/doc/current/components/http_foundation.html dans Responses
+        // https://symfony.com/doc/current/components/http_foundation.html dans Responses pour prepare et send
     }
 }
 
