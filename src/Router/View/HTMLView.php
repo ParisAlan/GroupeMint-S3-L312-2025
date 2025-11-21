@@ -9,8 +9,7 @@ abstract class HTMLView extends BaseView {
 
     static public function use_template(): bool
     {
-        return false; // Puisque c'est du HTML, il est censé renvoyer uniquement du HTML et rien d'autres ?
-        // donc pas de template donc false ?
+        return false; // Puisque c'est du HTML, il n'utilise pas de template, donc false
     }
 
     public function render(Request $request): Response
