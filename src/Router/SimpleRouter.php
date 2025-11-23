@@ -47,6 +47,33 @@ class Route {
      */
     public function call(Request $request, ?Renderer $engine): Response {
 	    // TODO
+        // 1. récupère la classe de la View
+        $viewClass = $this->view;
+
+        // 2. on regarde le constructeur de la classe
+        $reflect   = new \ReflectionClass($viewClass);
+        $ctor      = $reflect->getConstructor();
+
+        // 3. on instancie soit avec Renderer, soit sans
+        if ($ctor !== null && $ctor->getNumberOfParameters() > 0) {
+            // la view veux un argument (tempmatevoew)
+            $view = new $viewClass($engine);
+        } else {
+            // la view prend rien en paramètre 
+            $view = new $viewClass();
+        }
+
+        // 4. si elle utilise un template, on prépare le renderer
+        if (method_exists($viewClass, self::VIEW_USE_TEMPLATE_FUNC)
+            && $viewClass::use_template() 
+            && $engine !== null) {
+
+            // on enregistre le tag pour les templates
+            $engine->register($viewClass);
+        }
+
+        // 5. on demande à la View de produire la réponse
+        return $view->{self::VIEW_RENDER_FUNC}($request);
     }
 }
 
