@@ -44,7 +44,6 @@ class SimpleRouter implements Router {
 
         $this->routes[$path] = $class_or_view;
         // Catch-All ?
-	    // TODO
     }
 
     public function serve(mixed ...$args): void {
