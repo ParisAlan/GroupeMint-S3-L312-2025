@@ -4,7 +4,7 @@ namespace Framework312\Router;
 
 use Framework312\Router\Exception as RouterException;
 use Framework312\Template\Renderer;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request; // Rajout de Request
 use Symfony\Component\HttpFoundation\Response;
 
 class Route {
@@ -25,27 +25,48 @@ class Route {
 
     public function call(Request $request, ?Renderer $engine): Response {
 	    // TODO
+        // ???
     }
 }
 
 class SimpleRouter implements Router {
     private Renderer $engine;
 
+    private array $routes; // On crée le tableau qui nous servira par là suite à stocker les routes
+
     public function __construct(Renderer $engine) {
         $this->engine = $engine;
+        $this->routes = []; // On dit que c'est un tableau vide
         // TODO
     }
-//  $router = new SimpleRouter($engine);
-//  $router->register('/book/world  /book/7ABd9x', 'Book');
 
     public function register(string $path, string|object $class_or_view) {
-        $this->path = $path;
-        $this->class_or_view = $class_or_view;
-	    // TODO
+
+        $this->routes[$path] = $class_or_view;
+        // Catch-All ?
     }
 
     public function serve(mixed ...$args): void {
 	    // TODO
+        $request = Request::createFromGlobals(); // Il semblerait que c'est la façon la plus commune de commencer une requete
+
+        $request->getPathInfo();
+
+        // https://symfony.com/doc/current/components/http_foundation.html
+
+        $viewClass = $this->routes[$path]; // "Book" ici par exemple.
+
+        $route = new Route($viewClass); // On crée une nouvelle route
+
+        $response = $route->call($request, $this->engine); // Appelle la méthode call présente dans Route
+
+        // Préparer la réponse
+        $response->prepare($request);
+
+        // Puis envoyer ?
+        $response->send();
+
+        // https://symfony.com/doc/current/components/http_foundation.html dans Responses pour prepare et send
     }
 }
 
