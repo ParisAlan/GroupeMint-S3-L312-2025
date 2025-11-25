@@ -84,6 +84,7 @@ class SimpleRouter implements Router {
     public function __construct(Renderer $engine) {
         $this->engine = $engine;
         // TODO
+        $this->routes  = []; // registre initialisé
     }
 //  $router = new SimpleRouter($engine);
 //  $router->register('/book/world  /book/7ABd9x', 'Book');
@@ -92,7 +93,66 @@ class SimpleRouter implements Router {
     public function register(string $path, string|object $class_or_view) {
         $this->path = $path;
         $this->class_or_view = $class_or_view;
-	    // TODO
+	    // 1. Création de la Request (avec les args si besoin)
+        $request  = new Request(...$args);
+        $pathInfo = trim($request->getPathInfo(), '/');  // ex : "book/7"
+
+        // 2. On parcourt toutes les routes enregistrées
+        foreach ($this->routes as $pattern => $route) {
+
+            // Exemple :
+            // pattern : "book/:id"
+            // path    : "book/7"
+            $patternParts = explode('/', trim($pattern, '/'));
+            $pathParts    = explode('/', $pathInfo);
+
+            // S’ils n’ont pas le même nombre de segments → pas un match
+            if (count($patternParts) !== count($pathParts)) {
+                continue;
+            }
+
+            // Dictionnaire des paramètres capturés
+            $params = [];
+            $match  = true;
+
+            // On compare segment par segment
+            foreach ($patternParts as $index => $segment) {
+
+                $value = $pathParts[$index];
+
+                // Si segment commence par ":" → c’est une variable (ex : :id)
+                if (str_starts_with($segment, ':')) {
+
+                    $paramName = substr($segment, 1); // enlève ":"
+                    $params[$paramName] = $value;
+
+                } elseif ($segment !== $value) {
+                    // segment fixe différent → pas la bonne route
+                    $match = false;
+                    break;
+                }
+            }
+
+            // Si le pattern matche :
+            if ($match) {
+
+                // 4. Injecter les paramètres dans la Request
+                foreach ($params as $key => $value) {
+                    $request->attributes->set($key, $value);
+                }
+
+                // 5. Appeler la Route (qui appelle la View)
+                $response = $route->call($request, $this->engine);
+
+                // 6. Envoyer la réponse HTTP au navigateur
+                $response->send();
+                return; // On termine le serve()
+            }
+        }
+
+        // Si aucune route n'a matché => 404
+        $response = new Response("Not Found", 404);
+        $response->send();
     }
 
     public function serve(mixed ...$args): void {
