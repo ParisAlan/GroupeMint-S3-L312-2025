@@ -14,6 +14,20 @@ abstract class HTMLView extends BaseView {
 
     public function render(Request $request): Response
     {
-        // TODO: Implement render() method.
+        // getMethod va chercher la méthode approprié ( get, post, delete, ... )
+        // Convertit "GET", "POST"... en minuscules pour correspondre aux méthodes get(), post()...
+        $method = strtolower($request->getMethod());
+
+//        if (!method_exists($this, $method)) {
+//            throw new RouterException("Méthode HTTP non supportée : $method");
+//        }
+
+        $html = $this->$method($request);
+
+        return new Response(
+            $html,
+            Response::HTTP_OK,
+            ['Content-Type' => 'text/html']
+        );
     }
 }
