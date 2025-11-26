@@ -24,8 +24,19 @@ class Route {
     }
 
     public function call(Request $request, ?Renderer $engine): Response {
-	    // TODO
-        // ???
+
+        // Instanciation de la View avec le Renderer si nécessaire
+        $view = new $this->view($engine);
+
+        // Vérifie si la View nécessite un template mais aucun Renderer n'est fourni
+        if ($view::use_template() && $engine === null) {
+            throw new RouterException\InvalidViewImplementation(
+                "La vue {$this->view} nécessite un Renderer."
+            );
+        }
+
+        // appelle la methode render() de la View et retourne la response
+        return $view->render($request);
     }
 }
 
@@ -37,7 +48,6 @@ class SimpleRouter implements Router {
     public function __construct(Renderer $engine) {
         $this->engine = $engine;
         $this->routes = []; // On dit que c'est un tableau vide
-        // TODO
     }
 
     public function register(string $path, string|object $class_or_view) {
@@ -47,10 +57,9 @@ class SimpleRouter implements Router {
     }
 
     public function serve(mixed ...$args): void {
-	    // TODO
         $request = Request::createFromGlobals(); // Il semblerait que c'est la façon la plus commune de commencer une requete
 
-        $request->getPathInfo();
+        $path = $request->getPathInfo();
 
         // https://symfony.com/doc/current/components/http_foundation.html
 

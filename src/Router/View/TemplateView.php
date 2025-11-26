@@ -15,5 +15,14 @@ abstract class TemplateView extends BaseView {
     public function render( Request $request): Response
     {
        // TODO
+
+
+
+        // Renvoie une response Symfony correctement typée
+        return new Response(
+            $template_rep,
+            Response::HTTP_OK,
+            ['Content-Type' => 'unknown']
+        );
     }
 }
