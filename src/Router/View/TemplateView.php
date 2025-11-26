@@ -5,6 +5,7 @@ namespace Framework312\Router\View;
 use Framework312\Router\View\BaseView;
 use Framework312\Router\Exception as RouterException;
 use Framework312\Router\Request;
+use Framework312\Template\Renderer;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class TemplateView extends BaseView {
@@ -17,12 +18,18 @@ abstract class TemplateView extends BaseView {
     public function render( Request $request): Response
     {
        // TODO
+        // getMethod va chercher la méthode approprié ( get, post, delete, ... )
+        // Convertit "GET", "POST", etc... en minuscules pour correspondre aux méthodes get(), post() de la méthode mère
+        $method = strtolower($request->getMethod());
 
+        // Exécute la méthode (get(), post(), etc.) et récupère les données
+        $data = $this->$method($request);
 
+        // Render->register
 
         // Renvoie une response Symfony correctement typée
         return new Response(
-            $template_rep,
+            $template,
             Response::HTTP_OK,
             ['Content-Type' => 'unknown']
         );
