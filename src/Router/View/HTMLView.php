@@ -1,5 +1,7 @@
 <?php
 
+namespace Framework312\Router\View;
+
 use Framework312\Router\View\BaseView;
 use Framework312\Router\Exception as RouterException;
 use Framework312\Router\Request;

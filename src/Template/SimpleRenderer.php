@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+namespace Framework312\Template;
+
 use Framework312\Router\Exception as RouterException;
 use Framework312\Template\Renderer;
 use Twig\Environment; // On rajoute ce qu'il faut pour le bon fonctionnement de Twig
