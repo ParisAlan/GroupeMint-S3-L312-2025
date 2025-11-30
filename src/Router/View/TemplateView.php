@@ -22,10 +22,10 @@ abstract class TemplateView extends BaseView {
         // Convertit "GET", "POST", etc... en minuscules pour correspondre aux méthodes get(), post() de la méthode mère
         $method = strtolower($request->getMethod());
 
-        // Exécute la méthode (get(), post(), etc.) et récupère les données
+        // Exécute la méthode (get(), post(), etc.) et récupère les données comme pour les autres views
         $data = $this->$method($request);
 
-        // Render->register
+        // Render->register ??
 
         // Renvoie une response Symfony correctement typée
         return new Response(

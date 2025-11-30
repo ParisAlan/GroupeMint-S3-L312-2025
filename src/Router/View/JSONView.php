@@ -25,7 +25,7 @@ abstract class JSONView extends BaseView {
 
         // On va transformer les données en JSON.
         $json = json_encode($data, JSON_PRETTY_PRINT); // https://www.php.net/manual/en/function.json-encode.php
-        // le flag est optionnel mais on a quand même décidé de mettre celui qui rend le JSON plus lisible
+        // le flag est optionnel, mais on a quand même décidé de mettre celui qui semble rendre le JSON plus lisible
         // https://www.php.net/manual/en/json.constants.php#constant.json-pretty-print
 
         // Renvoie une response Symfony correctement typée

@@ -27,7 +27,7 @@ abstract class HTMLView extends BaseView {
         // Exécute la méthode (get(), post(), etc.) et récupère les données
         $html = $this->$method($request);
 
-        // Renvoie une response Symfony correctement typée
+        // Renvoie une response Symfony correctement typée ( html ici )
         return new Response(
             $html,
             Response::HTTP_OK,
